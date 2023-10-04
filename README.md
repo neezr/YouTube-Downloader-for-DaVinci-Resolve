@@ -2,8 +2,7 @@
 Download and import YouTube videos to DaVinci Resolve immediately.
 You can keep editing while your download is running!
 
-
-
+![YouTubeDownloader](https://github.com/neezr/YouTube-Downloader-for-DaVinci-Resolve/assets/145998491/420f6616-6285-4c1d-a276-603cb6c9cb36)
 
 ## Usage:
 - Run this script from DaVinci Resolve's dropdown menu (Workspace > Scripts)
