@@ -1,5 +1,6 @@
 # ~ YouTube Downloader ~
 Download and import YouTube videos to DaVinci Resolve immediately.
+
 You can keep editing while your download is running!
 
 ![YouTubeDownloader](https://github.com/neezr/YouTube-Downloader-for-DaVinci-Resolve/assets/145998491/420f6616-6285-4c1d-a276-603cb6c9cb36)
@@ -13,5 +14,5 @@ You can keep editing while your download is running!
 - Copy the .py-file into the folder "%appdata%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility"
 - Install Python 3.7+
 - Install the python modules 'pytube' and 'emoji'
-	- --> open 'cmd' on Windows and execute 'pip install pytube emoji' in the command line
-	- --> or install via requirements.txt with 'pip install -r requirements.txt'
+	- open 'cmd' on Windows and execute 'pip install pytube emoji' in the command line
+	- or: install via requirements.txt with 'pip install -r requirements.txt'
