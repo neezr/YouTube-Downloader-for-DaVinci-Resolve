@@ -13,7 +13,7 @@
 #	open cmd and execute 'pip install pytube emoji' in the command line
 #	or: install via requirements.txt with 'pip install -r requirements.txt'
 
-import os, re, sys, emoji, tkinter
+import os, emoji, tkinter
 from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog
