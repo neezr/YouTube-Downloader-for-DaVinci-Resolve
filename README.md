@@ -13,6 +13,6 @@ You can keep editing while your download is running!
 ## Install:
 - Copy the .py-file into the folder "%appdata%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility"
 - *Windows Only:* Install Python 3.7+
-- Install the python modules 'pytube' and 'emoji'
-	- open 'cmd' on Windows and execute 'pip install pytube emoji' in the command line
+- Install the python module 'pytube'
+	- open 'cmd' on Windows and execute 'pip install pytube' in the command line
 	- or: install via requirements.txt with 'pip install -r requirements.txt'
