@@ -9,11 +9,11 @@
 
 #Install:
 #Copy this .py-file into the folder "%appdata%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility"
-#Install the python modules 'pytube' and 'emoji'
-#	open cmd and execute 'pip install pytube emoji' in the command line
+#Install the python module 'pytube'
+#	open cmd and execute 'pip install pytube' in the command line
 #	or: install via requirements.txt with 'pip install -r requirements.txt'
 
-import os, emoji, tkinter
+import os, tkinter, re
 from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog
@@ -27,7 +27,7 @@ def downloadVideo(link):
 		pass
 	else:
 		yt = YouTube(link).streams.get_highest_resolution()
-		filename = emoji.replace_emoji(yt.default_filename, replace='').strip()
+		filename = remove_emoji(yt.default_filename).strip()
 
 		while " ." in filename: #remove trailing white spaces if last characters in title were emojis
 			filename = filename.replace(" .", ".")
@@ -47,6 +47,17 @@ def downloadVideo(link):
 
 		resolve.GetMediaStorage().AddItemsToMediaPool(os.path.join(filelocation, filename))
 
+def remove_emoji(string): #from https://gist.github.com/n1n9-jp/5857d7725f3b14cbc8ec3e878e4307ce
+	emoji_patterns = re.compile("["
+		u"\U00002700-\U000027BF"  # Dingbats
+		u"\U0001F600-\U0001F64F"  # Emoticons
+		u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+		u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+		u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+		u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+		u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+		"]+", re.UNICODE)
+	return re.sub(emoji_patterns, '', string)
 
 #GUI
 
