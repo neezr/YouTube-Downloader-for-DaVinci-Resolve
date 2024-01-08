@@ -18,7 +18,7 @@ from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog
 
-STANDARD_FILE_LOCATION = os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader")
+STANDARD_FILE_LOCATION = os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader".replace("\\", os.sep))
 filelocation = STANDARD_FILE_LOCATION
 
 
