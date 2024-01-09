@@ -14,9 +14,18 @@
 #	or: install via requirements.txt with 'pip install -r requirements.txt'
 
 import os, tkinter, re
-from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog
+
+try:
+	from pytube import YouTube
+except ModuleNotFoundError:
+	root_errormsg = Tk()
+	root_errormsg.wm_title("Nizar's YouTube Downloader for DaVinci Resolve")
+	l_err_msg = Label(root_errormsg, text="Module 'pytube' not found!\n\n'YouTube Downloader' requires the external module 'pytube' for downloading YouTube videos.\nPlease install pytube by opening the command line interface and running 'pip install pytube'.")
+	l_err_msg.pack(side="top", fill="x", pady=10)
+	l_ok_button = Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
+	root_errormsg.mainloop()
 
 STANDARD_FILE_LOCATION = os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader".replace("\\", os.sep))
 filelocation = STANDARD_FILE_LOCATION
