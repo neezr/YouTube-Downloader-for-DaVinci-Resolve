@@ -14,6 +14,7 @@
 #	or: install via requirements.txt with 'pip install -r requirements.txt'
 
 import os, tkinter, re
+import platform
 from tkinter import *
 from tkinter import filedialog
 
@@ -27,7 +28,8 @@ except ModuleNotFoundError:
 	l_ok_button = Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
 	root_errormsg.mainloop()
 
-STANDARD_FILE_LOCATION = os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader".replace("\\", os.sep))
+STANDARD_FILE_LOCATION = {"Windows":os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\Website Screenshotter"),"Darwin":r"/Library/Application Support/Blackmagic Design/Fusion/Scripts/Utility/Website Screenshotter","Linux":r"/opt/resolve/Fusion/Scripts/Utility/Website Screenshotter"}.get(platform.system(), r"/opt/resolve/Fusion/Scripts/Utility/Website Screenshotter")
+
 filelocation = STANDARD_FILE_LOCATION
 
 
