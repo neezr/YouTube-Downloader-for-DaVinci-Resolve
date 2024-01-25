@@ -28,7 +28,7 @@ except ModuleNotFoundError:
 	l_ok_button = Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
 	root_errormsg.mainloop()
 
-STANDARD_FILE_LOCATION = {"Windows":os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\Website Screenshotter"),"Darwin":r"/Library/Application Support/Blackmagic Design/Fusion/Scripts/Utility/Website Screenshotter","Linux":r"/opt/resolve/Fusion/Scripts/Utility/Website Screenshotter"}.get(platform.system(), r"/opt/resolve/Fusion/Scripts/Utility/Website Screenshotter")
+STANDARD_FILE_LOCATION = {"Windows":os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader"),"Darwin":r"/Library/Application Support/Blackmagic Design/Fusion/Scripts/Utility/YouTube Downloader","Linux":r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader"}.get(platform.system(), r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader")
 
 filelocation = STANDARD_FILE_LOCATION
 
