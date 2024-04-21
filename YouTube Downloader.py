@@ -1,5 +1,5 @@
 #~ YouTube Downloader ~
-#created by nizar / version 1.0
+#created by nizar / version 1.1
 #contact: http://twitter.com/nizarneezR
 
 #Usage:
@@ -19,7 +19,7 @@ from tkinter import *
 from tkinter import filedialog
 
 try:
-	from pytube import YouTube
+	from pytube import YouTube, Playlist
 except ModuleNotFoundError:
 	root_errormsg = Tk()
 	root_errormsg.wm_title("Nizar's YouTube Downloader for DaVinci Resolve")
@@ -53,10 +53,29 @@ def downloadVideo(link):
 
 
 		print(f"Done! Downloaded {filename} to {filelocation}")
-		os.startfile(filelocation, operation="explore")
 
 
 		resolve.GetMediaStorage().AddItemsToMediaPool(os.path.join(filelocation, filename))
+
+def downloadPlaylist(link):
+	if link == "":
+		pass
+	else:
+		playlist = Playlist(link)
+		print(f"Downloading playlist: {playlist.title}...")
+		for vidurl in playlist.video_urls:
+			downloadVideo(vidurl)
+		print(f"Done! Downloaded playlist {playlist.title} to {filelocation}")
+
+def download_from_link(link):
+	"""
+	Decide if this is a video download or playlist download
+	"""
+	if "/playlist" in link and "PL" in link: # youtube.com/playlist?list=PL.*
+		downloadPlaylist(link)
+	else: # youtube.com/watch?v=.*(&list=PL.*)? or youtu.be/.*
+		downloadVideo(link)
+	os.startfile(filelocation, operation="explore")
 
 def remove_emoji(string): #from https://gist.github.com/n1n9-jp/5857d7725f3b14cbc8ec3e878e4307ce
 	emoji_patterns = re.compile("["
@@ -79,7 +98,7 @@ def gui_download_event():
 		l_downloadbutton.configure(state=DISABLED, text="Downloading...")
 		l_entryField.configure(state=DISABLED)
 		try:
-			downloadVideo(url)
+			download_from_link(url)
 		except Exception: #RegexMatchError in pytube
 			pass
 		l_downloadbutton.configure(state=NORMAL, text="Download")
