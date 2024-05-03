@@ -17,6 +17,7 @@ import os, tkinter, re
 import platform
 from tkinter import *
 from tkinter import filedialog
+from collections import Counter
 
 try:
 	from pytube import YouTube, Playlist
@@ -28,7 +29,27 @@ except ModuleNotFoundError:
 	l_ok_button = Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
 	root_errormsg.mainloop()
 
-STANDARD_FILE_LOCATION = {"Windows":os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader"),"Darwin":r"/Library/Application Support/Blackmagic Design/Fusion/Scripts/Utility/YouTube Downloader","Linux":r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader"}.get(platform.system(), r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader")
+
+def guess_project_folder():
+	mp = resolve.GetProjectManager().GetCurrentProject().GetMediaPool()
+	filepaths = []
+	for mp_item in mp.GetRootFolder().GetClipList():
+		try:
+			dir_path = os.path.dirname(mp_item.GetClipProperty("File Path"))
+			filepaths.append(dir_path)
+		except KeyError:
+			pass
+	
+	while "" in filepaths:
+		filepaths.remove("")
+	
+	if not filepaths:
+		return None
+	else:
+		return Counter(filepaths).most_common(1)[0][0]
+
+
+STANDARD_FILE_LOCATION = guess_project_folder() or {"Windows":os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader"),"Darwin":r"/Library/Application Support/Blackmagic Design/Fusion/Scripts/Utility/YouTube Downloader","Linux":r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader"}.get(platform.system(), r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader")
 
 filelocation = STANDARD_FILE_LOCATION
 
