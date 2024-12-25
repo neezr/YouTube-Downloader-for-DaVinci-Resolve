@@ -15,9 +15,8 @@
 
 import os, tkinter, re
 import platform
-from tkinter import *
-from tkinter import filedialog
 from collections import Counter
+from tkinter import filedialog
 
 
 try:
@@ -27,11 +26,11 @@ try:
         from pytube import YouTube, Playlist
         print("Imported pytube instead of pytubefix. Expect unresolved issues.")
 except ModuleNotFoundError:
-    root_errormsg = Tk()
+    root_errormsg = tkinter.Tk()
     root_errormsg.wm_title("Nizar's YouTube Downloader for DaVinci Resolve")
-    l_err_msg = Label(root_errormsg, text="Module 'pytubefix' not found!\n\n'YouTube Downloader' requires the external module 'pytubefix' for downloading YouTube videos.\nPlease install pytubefix by opening the command line interface and running 'pip install pytubefix'.")
+    l_err_msg = tkinter.Label(root_errormsg, text="Module 'pytubefix' not found!\n\n'YouTube Downloader' requires the external module 'pytubefix' for downloading YouTube videos.\nPlease install pytubefix by opening the command line interface and running 'pip install pytubefix'.")
     l_err_msg.pack(side="top", fill="x", pady=10)
-    l_ok_button = Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
+    l_ok_button = tkinter.Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
     root_errormsg.mainloop()
 
 
@@ -125,15 +124,15 @@ def gui_download_event():
     url = l_entryField.get()
     audio_only = audio_only_var.get()
     if len(url) > 0:
-        l_downloadbutton.configure(state=DISABLED, text="Downloading...")
-        l_entryField.configure(state=DISABLED)
+        l_downloadbutton.configure(state=tkinter.DISABLED, text="Downloading...")
+        l_entryField.configure(state=tkinter.DISABLED)
         try:
             download_from_link(url, audio_only)
         except Exception: #RegexMatchError in pytube
             pass
-        l_downloadbutton.configure(state=NORMAL, text="Download")
-        l_entryField.configure(state=NORMAL)
-        l_entryField.delete(0, END)
+        l_downloadbutton.configure(state=tkinter.NORMAL, text="Download")
+        l_entryField.configure(state=tkinter.NORMAL)
+        l_entryField.delete(0, tkinter.END)
 
 
 def gui_change_filelocation_event():
@@ -150,29 +149,29 @@ def gui_reset_filelocation_event():
     l_filelocation_label.configure(text=filelocation)
 
 
-root = Tk()
+root = tkinter.Tk()
 root.title("Nizar's YouTube Downloader for DaVinci Resolve")
 BG_COLOR = '#28282e'
 FG_COLOR = '#cac5c4'
 root.configure(background=BG_COLOR)
 
-audio_only_var = BooleanVar()
+audio_only_var = tkinter.BooleanVar()
 
-l_text = Label(root, text="Enter YouTube URL:", bg=BG_COLOR, fg=FG_COLOR)
+l_text = tkinter.Label(root, text="Enter YouTube URL:", bg=BG_COLOR, fg=FG_COLOR)
 l_text.grid(row=0, column=0, sticky="W", padx=20, pady=10)
-l_entryField = Entry(root, width=50)
+l_entryField = tkinter.Entry(root, width=50)
 l_entryField.grid(row=1,column=0, sticky="W", padx=20)
-l_downloadbutton = Button(root, text="Download", padx=50, command=gui_download_event)
+l_downloadbutton = tkinter.Button(root, text="Download", padx=50, command=gui_download_event)
 l_downloadbutton.grid(row=2, column=0, sticky="W", padx=20, pady=10)
 
-l_audio_button = Checkbutton(root, text='Audio Only',variable=audio_only_var, onvalue=True, offvalue=False, anchor="w", bg=BG_COLOR, activebackground = BG_COLOR, highlightbackground = "gray", highlightthickness=2, fg="gray")
+l_audio_button = tkinter.Checkbutton(root, text='Audio Only',variable=audio_only_var, onvalue=True, offvalue=False, anchor="w", bg=BG_COLOR, activebackground = BG_COLOR, highlightbackground = "gray", highlightthickness=2, fg="gray")
 l_audio_button.grid(row=3, column=1, sticky="W", padx=20, pady=10)
 
-l_filelocation_label = Label(root, text=filelocation, anchor="w", bg=BG_COLOR, highlightbackground = "gray", highlightthickness=2, fg=FG_COLOR)
+l_filelocation_label = tkinter.Label(root, text=filelocation, anchor="w", bg=BG_COLOR, highlightbackground = "gray", highlightthickness=2, fg=FG_COLOR)
 l_filelocation_label.grid(row=4,column=0, sticky="W", padx=20, pady=(60,10))
-l_filelocation_button = Button(root, text="Change download folder", padx=50, command=gui_change_filelocation_event)
+l_filelocation_button = tkinter.Button(root, text="Change download folder", padx=50, command=gui_change_filelocation_event)
 l_filelocation_button.grid(row=5,column=0, sticky="W", padx=20)
-l_filereset_button = Button(root, text="Reset download folder", padx=50, command=gui_reset_filelocation_event)
+l_filereset_button = tkinter.Button(root, text="Reset download folder", padx=50, command=gui_reset_filelocation_event)
 l_filereset_button.grid(row=5, column=1, sticky="W", padx=20)
 
 
