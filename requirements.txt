@@ -1,1 +1,1 @@
-pytube==15.0.0
+pytubefix==8.7.0
