@@ -58,14 +58,14 @@ STANDARD_FILE_LOCATION = guess_project_folder() or {"Windows":os.path.expandvars
 filelocation = STANDARD_FILE_LOCATION
 
 
-def downloadVideo(link, audio_only=False):
+def download_video(link, audio_only=False):
     if link == "":
         pass
     else:
         if audio_only:
-            yt = YouTube(link).streams.filter(only_audio=True)[0]
+            yt = YouTube(link, client="ANDROID").streams.filter(only_audio=True)[0]
         else:
-            yt = YouTube(link).streams.get_highest_resolution()
+            yt = YouTube(link, client="ANDROID").streams.get_highest_resolution()
         filename = remove_emoji(yt.default_filename).strip() # ends with .mp4 or .m4a
 
         filename = re.sub(r" \.", r"\.", filename) #remove trailing white spaces if last characters in title were emojis
@@ -85,14 +85,14 @@ def downloadVideo(link, audio_only=False):
 
         resolve.GetMediaStorage().AddItemsToMediaPool(os.path.join(filelocation, filename))
 
-def downloadPlaylist(link, audio_only=False):
+def download_playlist(link, audio_only=False):
     if link == "":
         pass
     else:
-        playlist = Playlist(link)
+        playlist = Playlist(link, client="ANDROID")
         print(f"Downloading playlist: {playlist.title}...")
         for vidurl in playlist.video_urls:
-            downloadVideo(vidurl, audio_only)
+            download_video(vidurl, audio_only)
         print(f"Done! Downloaded playlist {playlist.title} to {filelocation}")
 
 def download_from_link(link, audio_only=False):
@@ -100,9 +100,9 @@ def download_from_link(link, audio_only=False):
     Decide if this is a video download or playlist download
     """
     if "/playlist" in link and "PL" in link: # youtube.com/playlist?list=PL.*
-        downloadPlaylist(link, audio_only)
+        download_playlist(link, audio_only)
     else: # youtube.com/watch?v=.*(&list=PL.*)? or youtu.be/.*
-        downloadVideo(link, audio_only)
+        download_video(link, audio_only)
     os.startfile(filelocation, operation="explore")
 
 def remove_emoji(string): #from https://gist.github.com/n1n9-jp/5857d7725f3b14cbc8ec3e878e4307ce
