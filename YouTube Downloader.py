@@ -20,6 +20,15 @@ import platform
 from collections import Counter
 from tkinter import filedialog
 
+DOWNLOAD_DEVICE = "ANDROID_VR"
+
+def show_error_message(msg):
+    root_errormsg = tkinter.Tk()
+    root_errormsg.wm_title("Nizar's YouTube Downloader for DaVinci Resolve")
+    l_err_msg = tkinter.Label(root_errormsg, text=msg)
+    l_err_msg.pack(side="top", fill="x", pady=10)
+    l_ok_button = tkinter.Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
+    root_errormsg.mainloop()
 
 try:
     try:
@@ -28,12 +37,7 @@ try:
         from pytube import YouTube, Playlist
         print("Imported pytube instead of pytubefix. Expect unresolved issues.")
 except ModuleNotFoundError:
-    root_errormsg = tkinter.Tk()
-    root_errormsg.wm_title("Nizar's YouTube Downloader for DaVinci Resolve")
-    l_err_msg = tkinter.Label(root_errormsg, text="Module 'pytubefix' not found!\n\n'YouTube Downloader' requires the external module 'pytubefix' for downloading YouTube videos.\nPlease install pytubefix by opening the command line interface and running 'pip install pytubefix'.")
-    l_err_msg.pack(side="top", fill="x", pady=10)
-    l_ok_button = tkinter.Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
-    root_errormsg.mainloop()
+    show_error_message("Module 'pytubefix' not found!\n\n'YouTube Downloader' requires the external module 'pytubefix' for downloading YouTube videos.\nPlease install pytubefix by opening the command line interface and running 'pip install pytubefix'.")
 
 
 def guess_project_folder():
@@ -54,8 +58,8 @@ def guess_project_folder():
     else:
         return Counter(filepaths).most_common(1)[0][0]
 
-
-STANDARD_FILE_LOCATION = guess_project_folder() or {"Windows":os.path.expandvars(r"%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\YouTube Downloader"),"Darwin":r"/Library/Application Support/Blackmagic Design/Fusion/Scripts/Utility/YouTube Downloader","Linux":r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader"}.get(platform.system(), r"/opt/resolve/Fusion/Scripts/Utility/YouTube Downloader")
+OS_TO_STANDARD_FILE_LOCATION = {"Windows": os.path.expandvars(r"%USERPROFILE%\Downloads"), "Darwin": os.path.expanduser("~/Downloads"), "Linux": os.path.expanduser("~/Downloads")}
+STANDARD_FILE_LOCATION = guess_project_folder() or OS_TO_STANDARD_FILE_LOCATION.get(platform.system(), "Linux")
 
 filelocation = STANDARD_FILE_LOCATION
 
@@ -65,9 +69,9 @@ def download_video(link, audio_only=False):
         pass
     else:
         if audio_only:
-            yt = YouTube(link, client="ANDROID").streams.filter(only_audio=True)[0]
+            yt = YouTube(link, client=DOWNLOAD_DEVICE).streams.filter(only_audio=True)[0]
         else:
-            yt = YouTube(link, client="ANDROID").streams.get_highest_resolution()
+            yt = YouTube(link, client=DOWNLOAD_DEVICE).streams.get_highest_resolution()
         filename = remove_emoji(yt.default_filename).strip() # ends with .mp4 or .m4a
 
         filename = re.sub(r" \.", r"\.", filename) #remove trailing white spaces if last characters in title were emojis
@@ -77,21 +81,20 @@ def download_video(link, audio_only=False):
 
 
         try:
-            yt.download(filelocation,filename=filename)
+            file_path = yt.download(filelocation,filename=filename)
         except:
             print(f"Error: Could not download video at {link}")
 
 
-        print(f"Done! Downloaded {filename} to {filelocation}")
+        print(f"Done! Downloaded {file_path}")
 
-
-        resolve.GetMediaStorage().AddItemsToMediaPool(os.path.join(filelocation, filename))
+        resolve.GetMediaStorage().AddItemListToMediaPool([file_path])
 
 def download_playlist(link, audio_only=False):
     if link == "":
         pass
     else:
-        playlist = Playlist(link, client="ANDROID")
+        playlist = Playlist(link, client=DOWNLOAD_DEVICE)
         print(f"Downloading playlist: {playlist.title}...")
         for vidurl in playlist.video_urls:
             download_video(vidurl, audio_only)
@@ -105,7 +108,8 @@ def download_from_link(link, audio_only=False):
         download_playlist(link, audio_only)
     else: # youtube.com/watch?v=.*(&list=PL.*)? or youtu.be/.*
         download_video(link, audio_only)
-    os.startfile(filelocation, operation="explore")
+    if platform.system() == "Windows":
+        os.startfile(filelocation, operation="explore")
 
 def remove_emoji(string): #from https://gist.github.com/n1n9-jp/5857d7725f3b14cbc8ec3e878e4307ce
     emoji_patterns = re.compile("["
@@ -130,8 +134,8 @@ def gui_download_event():
         l_entryField.configure(state=tkinter.DISABLED)
         try:
             download_from_link(url, audio_only)
-        except Exception: #RegexMatchError in pytube
-            pass
+        except Exception as e: # RegexMatchError in pytube or failed download
+            show_error_message(f"Error downloading {url}:\n\n{e}\n\nThis error possibly emerged from an update in YouTube's API. In that case, please download a new version of 'YouTube Downloader' from https://github.com/neezr/YouTube-Downloader-for-DaVinci-Resolve/")
         l_downloadbutton.configure(state=tkinter.NORMAL, text="Download")
         l_entryField.configure(state=tkinter.NORMAL)
         l_entryField.delete(0, tkinter.END)
