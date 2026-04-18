@@ -1,19 +1,21 @@
-#~ YouTube Downloader ~
-#created by nizar / version 1.2
-#contact: http://twitter.com/nizarneezR
+# YouTube Downloader
+# created by nizar
+# contact: http://twitter.com/nizarneezR
 
-#Usage:
-#Run this script from DaVinci Resolve's dropdown menu (Workspace > Scripts)
-#Select your project folder and paste a YouTube URL into the text field
-#The video will automatically be downloaded as .mp4-file with the highest available resolution, placed in your project folder and imported to your Media Pool
+# Usage:
+# Run this script from DaVinci Resolve's dropdown menu (Workspace > Scripts)
+# Select your project folder and paste a YouTube URL into the text field
+# The video will automatically be downloaded as .mp4-file with the highest available resolution, placed in your project folder and imported to your Media Pool
 
-#Install:
-#Copy this .py-file into the folder "%appdata%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility"
-#Install the python module 'pytubefix'
+# Install:
+# Copy this .py-file into the folder "%appdata%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility"
+# Install the python module 'pytubefix'
 #    open cmd and execute 'pip install pytubefix' in the command line
 #    or: install via requirements.txt with 'pip install -r requirements.txt'
 
-import os, tkinter, re
+import os
+import tkinter
+import re
 import platform
 from collections import Counter
 from tkinter import filedialog
