@@ -28,6 +28,7 @@ def show_error_message(msg):
     l_err_msg = tkinter.Label(root_errormsg, text=msg)
     l_err_msg.pack(side="top", fill="x", pady=10)
     l_ok_button = tkinter.Button(root_errormsg, text="Okay", command=root_errormsg.destroy)
+    l_ok_button.pack(side="top", fill="x", pady=10)
     root_errormsg.mainloop()
 
 try:
