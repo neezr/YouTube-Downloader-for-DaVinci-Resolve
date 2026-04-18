@@ -36,7 +36,7 @@ try:
         from pytubefix import YouTube, Playlist
     except ModuleNotFoundError:
         from pytube import YouTube, Playlist
-        print("Imported pytube instead of pytubefix. Expect unresolved issues.")
+        show_error_message("Imported pytube instead of pytubefix. Expect unresolved issues.")
 except ModuleNotFoundError:
     show_error_message("Module 'pytubefix' not found!\n\n'YouTube Downloader' requires the external module 'pytubefix' for downloading YouTube videos.\nPlease install pytubefix by opening the command line interface and running 'pip install pytubefix'.")
 
@@ -83,8 +83,8 @@ def download_video(link, audio_only=False):
 
         try:
             file_path = yt.download(filelocation,filename=filename)
-        except:
-            print(f"Error: Could not download video at {link}")
+        except Exception as e:
+            show_error_message(f"Error: Could not download video at {link}\n{e}")
 
 
         print(f"Done! Downloaded {file_path}")
